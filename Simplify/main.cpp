@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     
     ifstream inFile;
     
-    inFile.open("camion.obj");
+    inFile.open("42078_lod4.obj");
     
     if (!inFile) {
         cout << "Unable to open file";
