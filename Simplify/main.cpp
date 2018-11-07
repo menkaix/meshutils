@@ -51,7 +51,8 @@ int main(int argc, char *argv[])
     
     inFile.close();
     
-    cout << i << " models found" << endl;
+    cout << mesh.groups.size() << " models found" << endl;
+    cout << mesh.vertice.size() << " vertex found" << endl;
     
     system("PAUSE");
     return EXIT_SUCCESS;

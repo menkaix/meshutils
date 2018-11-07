@@ -19,7 +19,7 @@ struct Vector3{
 		x=y=z=0;
 	}
 	
-	vector3(float X, float Y, float Z){
+	Vector3(float X, float Y, float Z){
 		x=X;
 		y=Y;
 		z=Z;
@@ -50,12 +50,15 @@ struct FaceVertex{
 class Mesh{
 	
 	private :
+		
+		
+	public :
+		
 		vector<Vector3> vertice;
 		vector<Vector2> uvs;
 		vector<Vector3> normals;
 		vector<string> groups;
 		
-	public :
 		Mesh();
 		void append(string element);
 	
