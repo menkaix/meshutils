@@ -54,7 +54,7 @@ class Mesh{
 		
 	public :
 		
-		vector<Vector3> vertice;
+		vector<Vector3> vertices;
 		vector<Vector2> uvs;
 		vector<Vector3> normals;
 		vector<string> groups;

@@ -33,7 +33,7 @@ void Mesh::append(string element){
 		
 		ss >> x >> y >> z ;
 		
-		vertice.push_back(Vector3(x,y,z));
+		vertices.push_back(Vector3(x,y,z));
 				
 		//cout << "[vertex] " << x << " " << y << " " << z << endl; 
 		
