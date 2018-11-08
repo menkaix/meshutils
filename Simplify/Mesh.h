@@ -47,6 +47,18 @@ struct FaceVertex{
 	int normalID ;
 };
 
+class Face{
+	
+	public :
+		
+		vector<FaceVertex> vertices ;
+		vector<string> rawFaces ;
+		
+		Face(string source);
+	
+	
+};
+
 class Mesh{
 	
 	private :
@@ -54,10 +66,13 @@ class Mesh{
 		
 	public :
 		
+		int maxOrder ;
+		
 		vector<Vector3> vertices;
 		vector<Vector2> uvs;
 		vector<Vector3> normals;
 		vector<string> groups;
+		vector<Face> faces;
 		
 		Mesh();
 		void append(string element);

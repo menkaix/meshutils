@@ -8,6 +8,35 @@ Mesh::Mesh(){
 	//vector<Vector2> uvs;
 	//vector<Vector3> normals;
 	//vector<string> groups;
+	
+	maxOrder = 0 ;
+}
+
+Face::Face(string source){
+	
+	string temp("") ;
+	
+	for(int j = 0 ; j<source.length() ; j++){
+		stringstream ss ;
+		string character = source.substr(j,1);	
+		
+		
+		
+		if(character.compare(0,1," ")!=0  && character.compare(0,1,"\n")){
+			ss << temp << character ;
+			temp = ss.str();
+		}else{
+			rawFaces.push_back(temp);
+			
+			//cout << "[vertex] " << temp << endl ;
+			ss.clear();	
+			temp = "" ;		
+		}
+		
+		
+	};
+	
+	
 }
 
 
@@ -70,8 +99,17 @@ void Mesh::append(string element){
 	}else if(element.compare(0, 2, "f ") == 0){
 		
 		string elementValue = element.substr(2, element.length()-2);
+		
+		Face f(elementValue) ;
+		
+		if(f.rawFaces.size()>maxOrder){
+			cout << "[face] " << f.rawFaces.size() << " " << endl;
+			maxOrder = f.rawFaces.size() ;
+		}		
+		
+		faces.push_back(f);
 				
-		//cout << "[face] " << elementValue << endl; 
+		//cout << "[face] " << i++ << endl; 
 		
 	}else if(element.compare(0, 2, "s ") == 0){
 		

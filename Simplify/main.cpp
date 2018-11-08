@@ -53,7 +53,9 @@ int main(int argc, char *argv[])
     
     cout << mesh.groups.size() << " models found" << endl;
     cout << mesh.vertices.size() << " vertex found" << endl;
-    
+	cout << mesh.faces.size() << " faces found " << mesh.maxOrder << endl;
+	
+	    
     system("PAUSE");
     return EXIT_SUCCESS;
 }
