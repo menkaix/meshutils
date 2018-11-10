@@ -16,25 +16,30 @@ Face::Face(string source){
 	
 	string temp("") ;
 	
+	cout << "[Face] " << source << " "  << endl ;
+	
 	for(int j = 0 ; j<source.length() ; j++){
+		
 		stringstream ss ;
 		string character = source.substr(j,1);	
 		
-		
-		
-		if(character.compare(0,1," ")!=0  && character.compare(0,1,"\n")){
+		if(character.compare(0,1," ")!=0){
 			ss << temp << character ;
 			temp = ss.str();
 		}else{
 			rawFaces.push_back(temp);
 			
-			//cout << "[vertex] " << temp << endl ;
+			cout << "[vertex] " << temp << endl ;
 			ss.clear();	
 			temp = "" ;		
 		}
 		
-		
 	};
+	
+	//the last token
+	rawFaces.push_back(temp);
+	cout << "[vertex] " << temp << endl ;
+	temp = "" ;		
 	
 	
 }

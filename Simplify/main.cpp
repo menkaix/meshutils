@@ -13,7 +13,16 @@ int main(int argc, char *argv[])
     
     ifstream inFile;
     
-    inFile.open("42078_lod4.obj");
+    char* fileName ;;
+    
+    if(argc>1){
+    	fileName = argv[1] ;
+	}
+	else{
+		return EXIT_FAILURE;
+	}
+    
+    inFile.open(fileName);
     
     if (!inFile) {
         cout << "Unable to open file";
@@ -51,11 +60,11 @@ int main(int argc, char *argv[])
     
     inFile.close();
     
-    cout << mesh.groups.size() << " models found" << endl;
+    cout << mesh.groups.size() << " groups found" << endl;
     cout << mesh.vertices.size() << " vertex found" << endl;
 	cout << mesh.faces.size() << " faces found " << mesh.maxOrder << endl;
-	
-	    
-    system("PAUSE");
+
+
+
     return EXIT_SUCCESS;
 }
