@@ -57,7 +57,7 @@ VertexNode::VertexNode(string source) {
 
 	//the last token
 	ss >> normalID;
-	cout << "[vertex] " << vertexID << " ; " << uvID << " ; "<< normalID << endl;
+	//cout << "[vertex] " << vertexID << " ; " << uvID << " ; "<< normalID << endl;
 	temp = "";
 
 }
@@ -66,7 +66,7 @@ Face::Face(string source) {
 
 	string temp("");
 
-	cout << "[Face] " << source << " " << endl;
+	//cout << "[Face] " << source << " " << endl;
 
 	for (int j = 0; j<source.length(); j++) {
 
@@ -104,7 +104,7 @@ Face::Face(string source) {
 
 void Mesh::append(string element) {
 
-	if (element.compare(0, 2, "g ") == 0) {
+	if ((element.compare(0, 2, "g ") == 0)|| (element.compare(0, 2, "o ") == 0)) {
 
 		string elementValue = element.substr(2, element.length() - 2);
 
@@ -168,7 +168,7 @@ void Mesh::append(string element) {
 		Face f(elementValue);
 
 		if (f.rawFaces.size()>maxOrder) {
-			cout << "[face] " << f.rawFaces.size() << " " << endl;
+			//cout << "[face] " << f.rawFaces.size() << " " << endl;
 			maxOrder = f.rawFaces.size();
 		}
 
