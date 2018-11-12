@@ -10,35 +10,34 @@
 using namespace std;
 
 Mesh::Mesh() {
-	//vector<Vector3> vertice;
-	//vector<Vector2> uvs;
-	//vector<Vector3> normals;
-	//vector<string> groups;
 
-	maxOrder = 0;
+	maxFaceOrder = 0;
+	minVertexValence = 1e+10;
+	maxVertexValence = 0;
 }
 
 VertexNode::VertexNode(string source) {
 	string temp("");
 
 	int i = 0;
-	stringstream ss;
+	
 	for (int j = 0; j<source.length(); j++) {
 
-		
 		string character = source.substr(j, 1);
 
 		if (character.compare(0, 1, "/") != 0) {
-			ss << temp << character;
-			temp = ss.str();
+			
+			temp.append(character);
 		}
 		else {
 			if (i == 0) {
-				ss >> vertexID;
+				vertexID = stoi(temp);
 			}
 			else if (i == 1) {
-				ss >> uvID;
-				if (uvID <= 0) {
+				if (temp.length() > 0) {
+					uvID = stoi(temp);
+				}
+				else {
 					uvID = 0;
 				}
 			}
@@ -47,8 +46,6 @@ VertexNode::VertexNode(string source) {
 				cout << "[warning] you should not be here" << endl;
 			}
 
-			//cout << "[vertex] " << temp << endl;
-			ss.clear();
 			temp = "";
 			i++;
 		}
@@ -56,8 +53,7 @@ VertexNode::VertexNode(string source) {
 	};
 
 	//the last token
-	ss >> normalID;
-	//cout << "[vertex] " << vertexID << " ; " << uvID << " ; "<< normalID << endl;
+	normalID = stoi(temp);;
 	temp = "";
 
 }
@@ -66,22 +62,17 @@ Face::Face(string source) {
 
 	string temp("");
 
-	//cout << "[Face] " << source << " " << endl;
-
 	for (int j = 0; j<source.length(); j++) {
 
-		stringstream ss;
 		string character = source.substr(j, 1);
 
 		if (character.compare(0, 1, " ") != 0) {
-			ss << temp << character;
-			temp = ss.str();
+			
+			temp.append(character);
 		}
 		else {
 			rawFaces.push_back(temp);
 
-			//cout << "[vertex] " << temp << endl;
-			ss.clear();
 			temp = "";
 		}
 
@@ -89,7 +80,6 @@ Face::Face(string source) {
 
 	//the last token
 	rawFaces.push_back(temp);
-	//cout << "[vertex] " << temp << endl;
 	temp = "";
 
 	for (int i = 0 ;  i<rawFaces.size()  ; i++) {
@@ -97,7 +87,7 @@ Face::Face(string source) {
 		vertices.push_back(tmp);
 	}
 
-
+	rawFaces.clear();
 }
 
 
@@ -109,8 +99,6 @@ void Mesh::append(string element) {
 		string elementValue = element.substr(2, element.length() - 2);
 
 		groups.push_back(elementValue);
-
-		//cout << "[group] " << elementValue << endl; 
 
 	}
 	else if (element.compare(0, 2, "v ") == 0) {
@@ -124,7 +112,7 @@ void Mesh::append(string element) {
 
 		ss >> x >> y >> z;
 
-		vertices.push_back(Vector3(x, y, z));
+		vertices.push_back(Vertex(x, y, z));
 
 		//cout << "[vertex] " << x << " " << y << " " << z << endl; 
 
@@ -142,8 +130,6 @@ void Mesh::append(string element) {
 
 		uvs.push_back(Vector2(u, v));
 
-		//cout << "[uv] " << elementValue << endl; 
-
 	}
 	else if (element.compare(0, 3, "vn ") == 0) {
 
@@ -156,9 +142,7 @@ void Mesh::append(string element) {
 
 		ss >> x >> y >> z;
 
-		normals.push_back(Vector3(x, y, z));
-
-		//cout << "[normal] " << elementValue << endl; 
+		normals.push_back(Normal(x, y, z));
 
 	}
 	else if (element.compare(0, 2, "f ") == 0) {
@@ -167,35 +151,26 @@ void Mesh::append(string element) {
 
 		Face f(elementValue);
 
-		if (f.rawFaces.size()>maxOrder) {
-			//cout << "[face] " << f.rawFaces.size() << " " << endl;
-			maxOrder = f.rawFaces.size();
+		if (f.vertices.size()>maxFaceOrder) {
+			maxFaceOrder = f.vertices.size();
 		}
 
 		faces.push_back(f);
-
-		//cout << "[face] " << i++ << endl; 
 
 	}
 	else if (element.compare(0, 2, "s ") == 0) {
 
 		string elementValue = element.substr(2, element.length() - 2);
 
-		//cout << "[?] " << elementValue << endl; 
-
 	}
 	else if (element.compare(0, 7, "usemtl ") == 0) {
 
 		string elementValue = element.substr(7, element.length() - 7);
 
-		//cout << "[material] " << elementValue << endl; 
-
 	}
 	else if (element.compare(0, 7, "mtllib ") == 0) {
 
 		string elementValue = element.substr(7, element.length() - 7);
-
-		//cout << "[mtlib] " << elementValue << endl; 
 
 	}
 	else if (element.compare(0, 2, "# ") == 0) {
@@ -207,12 +182,57 @@ void Mesh::append(string element) {
 	}
 	else if (element.length() == 0) {
 
-		//cout << "[empty] " << endl; 
-
 	}
-
 	else {
 		cout << "[unknown] '" << element << "'" << endl;
 	}
 
+}
+
+void Mesh::updateVertexData() {
+	
+	for (int i = 0; i < vertices.size(); i++) {
+
+		vertices[i].valence = 0;
+
+	}
+
+	//update valence
+	for (int i = 0; i < faces.size(); i++) { // pour chaque face
+
+		for (int j = 0 ; j < faces[i].vertices.size(); j++) { // chaque sommet de la face
+
+			int k = faces[i].vertices[j].vertexID -1 ;//index begins at 1 in obj file
+			int l= faces[i].vertices[j].uvID -1 ;//index begins at 1 in obj file
+			int m = faces[i].vertices[j].normalID -1 ;//index begins at 1 in obj file
+			
+			if ((k) < vertices.size()) {
+				
+				vertices[k].valence++; 
+
+				faces[i].vertices[j].myVertex = &(vertices[k]);
+				faces[i].vertices[j].myUV = &(uvs[l]);
+				faces[i].vertices[j].myNormal = &(normals[m]);
+
+			}
+			else {
+				
+				cout << "[error] index "<< k <<" out of bound for vertices" << endl;
+
+			}
+		}
+	}
+
+	// getting valence data (expandable)
+	for (int i = 0; i < vertices.size(); i++) {
+		
+		int v = vertices[i].valence;
+
+		if (v <= minVertexValence) {
+			minVertexValence = v;
+		}
+		if (v >= maxVertexValence) {
+			maxVertexValence = v;
+		}
+	}
 }

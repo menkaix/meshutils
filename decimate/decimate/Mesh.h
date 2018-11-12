@@ -4,23 +4,6 @@
 
 using namespace std;
 
-struct Vector3 {
-	float x;
-	float y;
-	float z;
-
-	Vector3() {
-		x = y = z = 0;
-	}
-
-	Vector3(float X, float Y, float Z) {
-		x = X;
-		y = Y;
-		z = Z;
-	}
-
-};
-
 struct Vector2 {
 	float u;
 	float v;
@@ -35,6 +18,45 @@ struct Vector2 {
 	}
 };
 
+class Normal {
+public :
+	float x;
+	float y;
+	float z;
+
+	Normal() {
+		x = y = z = 0;
+	}
+
+	Normal(float X, float Y, float Z) {
+		x = X;
+		y = Y;
+		z = Z;
+	}
+
+};
+
+class Vertex {
+
+public :
+	float x;
+	float y;
+	float z;
+
+	int valence;
+
+	Vertex() {
+		x = y = z = 0;
+	}
+
+	Vertex(float X, float Y, float Z) {
+		x = X;
+		y = Y;
+		z = Z;
+	}
+
+};
+
 class VertexNode {
 
 public :
@@ -42,16 +64,21 @@ public :
 	int uvID;
 	int normalID;
 
+	Vertex* myVertex;
+	Vector2* myUV;
+	Normal* myNormal;
+
 	VertexNode(string source);
 
 };
 
 class Face {
 
+private:
+	vector<string> rawFaces;
 public:
 
-	vector<VertexNode> vertices;
-	vector<string> rawFaces;
+	vector<VertexNode> vertices;	
 
 	Face(string source);
 
@@ -65,15 +92,19 @@ private:
 
 public:
 
-	int maxOrder;
+	int maxFaceOrder ;
+	int minVertexValence ;
+	int maxVertexValence ;
 
-	vector<Vector3> vertices;
+	vector<Vertex> vertices;
 	vector<Vector2> uvs;
-	vector<Vector3> normals;
+	vector<Normal> normals;
 	vector<string> groups;
 	vector<Face> faces;
 
 	Mesh();
+
 	void append(string element);
+	void updateVertexData();
 
 };
