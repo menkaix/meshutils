@@ -1,12 +1,7 @@
 
 *.o
 *.exe
-*.win
-*.layout
 *.obj
 decimate/Debug/
 decimate/decimate/Debug/
-*.user
-*.filters
-*.vcxproj
 decimate/.vs/
