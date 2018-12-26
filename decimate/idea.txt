@@ -1,0 +1,6 @@
+- fusionner tous les points proches
+
+- supprimer les faces et sommets intérieurs
+
+- applannir les faces obtus
+
