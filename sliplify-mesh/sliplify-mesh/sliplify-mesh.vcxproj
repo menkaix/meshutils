@@ -147,7 +147,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="geometry3D.cpp" />
     <ClCompile Include="sliplify-mesh.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="geometry3D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
