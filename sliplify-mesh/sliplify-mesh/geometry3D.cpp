@@ -41,6 +41,20 @@ Direction3D Direction3D::normalizedClone()
 	return Direction3D();
 }
 
+Direction3D Direction3D::operator*(float f)
+{
+	Direction3D d = Direction3D(f*x,f*y,f*z);
+
+	return d;
+}
+
+Direction3D Direction3D::operator+(Direction3D d)
+{
+	Direction3D d = Direction3D(d.x+x, d.y+y, d.z+z);
+
+	return d;
+}
+
 Direction3D Direction3D::normalizedClone(float X, float Y, float Z)
 {
 	return Direction3D();

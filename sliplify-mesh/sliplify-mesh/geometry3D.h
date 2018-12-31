@@ -15,7 +15,7 @@ public :
 	void translate(float X, float Y, float Z);
 	void translate(Direction3D dir);
 
-	Direction3D operator- (Point3D b);
+	Direction3D operator - (Point3D b);
 
 };
 
@@ -36,7 +36,9 @@ public:
 	Direction3D normalizeSelf();
 	Direction3D normalizedClone();
 
+	Direction3D operator * (float f);
 
+	Direction3D operator + (Direction3D d);
 
 	static Direction3D normalizedClone(float X, float Y, float Z);
 
